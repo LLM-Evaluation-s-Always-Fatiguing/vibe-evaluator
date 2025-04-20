@@ -93,3 +93,45 @@ The term "Vibe Evaluating" intentionally embraces this element of subjectivity a
     *   一个整体的 "vibe" 叙述，捕捉感知的特性、潜力和风格。
 
 术语 "Vibe Evaluating" 有意包含了这种主观性和直觉的元素，旨在理解 agent 的 *精神*、*风格* 和 *潜力*，以及其可证明的功能，就像评估一个人一样。
+
+## MVP Implementation
+
+This repository includes a Minimum Viable Product (MVP) implementation of the Vibe Evaluator concept in the `mvp/` directory. The MVP demonstrates a self-introspection approach for agent evaluation:
+
+1. **Tool Collection Loading**: Loads tools from an MCP server using the MCP protocol
+2. **Self-Analysis**: Prompts the agent to create a detailed list of its own capabilities
+3. **Metric Design**: The agent identifies and defines 6 evaluation metrics for itself
+4. **Task Creation**: Designs specific executable tasks that test its declared capabilities
+5. **Task Execution**: Performs these tasks and records execution results
+6. **Self-Scoring**: Derives quantified values (0-1) for each evaluation metric
+7. **Structured Reporting**: Outputs the complete evaluation in various formats (console, JSON, YAML, HTML)
+
+### Report Example
+
+Below is an example of the generated HTML report from the agent self-evaluation:
+
+![Report Example](mvp/report-example.png)
+
+See [MVP README](mvp/README.md) for detailed usage instructions.
+
+---
+
+## MVP 实现
+
+此仓库在 `mvp/` 目录中包含了 Vibe Evaluator 概念的最小可行产品 (MVP) 实现。该 MVP 展示了一种代理自我内省评估方法：
+
+1. **工具集加载**：使用 MCP 协议从 MCP 服务器加载工具
+2. **自我分析**：提示代理创建自身能力的详细列表
+3. **指标设计**：代理为自己确定并定义 6 个评估指标
+4. **任务创建**：设计测试其声明能力的具体可执行任务
+5. **任务执行**：执行这些任务并记录执行结果
+6. **自我评分**：为每个评估指标导出量化值（0-1）
+7. **结构化报告**：以各种格式（控制台、JSON、YAML、HTML）输出完整评估
+
+### 报告示例
+
+以下是代理自我评估生成的 HTML 报告示例：
+
+![报告示例](mvp/report-example.png)
+
+有关详细使用说明，请参阅 [MVP README](mvp/README.md)。
