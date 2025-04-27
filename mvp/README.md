@@ -21,17 +21,16 @@ This approach demonstrates the minimal core concept of capability-based evaluati
 ## Usage
 
 ```bash
-# Basic usage (outputs to console)
-python introspect_agent_mvp.py
+# Basic usage with default time server (stdio)
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York"
 
-# Output as JSON file
-python introspect_agent_mvp.py --output json
+# Using an SSE server
+python introspect_agent_mvp.py --server-type sse --server-params "https://example.com/mcp-endpoint"
 
-# Output as YAML file
-python introspect_agent_mvp.py --output yaml
-
-# Output as HTML report (uses template.html)
-python introspect_agent_mvp.py --output html
+# Output format options
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output json
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output yaml
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output html
 ```
 
 ## Report Example
@@ -63,17 +62,16 @@ Below is an example of the generated HTML report from the agent self-evaluation:
 ## 使用方法
 
 ```bash
-# 基本用法（输出到控制台）
-python introspect_agent_mvp.py
+# 使用默认时间服务器的基本用法 (stdio)
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York"
 
-# 输出为 JSON 文件
-python introspect_agent_mvp.py --output json
+# 使用 SSE 服务器
+python introspect_agent_mvp.py --server-type sse --server-params "https://example.com/mcp-endpoint"
 
-# 输出为 YAML 文件
-python introspect_agent_mvp.py --output yaml
-
-# 输出为 HTML 报告（使用 template.html）
-python introspect_agent_mvp.py --output html
+# 输出格式选项
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output json
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output yaml
+python introspect_agent_mvp.py --server-type stdio --server-params "uvx mcp-server-time --local-timezone=America/New_York" --output html
 ```
 
 ## 报告示例
