@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCP Service Evaluation Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Import Tailwind CSS and DaisyUI CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Import ECharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- Configure Tailwind and DaisyUI -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: {
+                50: "#FFF9E5",
+                100: "#FFF0B3",
+                200: "#FFE680",
+                300: "#FFDB4D",
+                400: "#FFD11A",
+                500: "#FFCC00",
+                600: "#E6B800",
+                700: "#CCA300",
+                800: "#B38F00",
+                900: "#997A00",
+              },
+            },
+          },
+        },
+        daisyui: {
+          themes: [
+            {
+              luxury: {
+                ...require("daisyui/src/theming/themes")["[data-theme=luxury]"],
+                primary: "#FFD700", // Gold
+                "primary-focus": "#E6C200", // Deep gold
+                "primary-content": "#000000", // Black text
+                secondary: "#B8860B", // Dark gold
+                accent: "#DAA520", // Golden rod
+                "base-100": "#000000", // Pure black background
+                "base-200": "#0A0A0A", // Slightly brighter black
+                "base-300": "#141414", // Deep gray-black
+                neutral: "#272727", // Neutral color
+              },
+            },
+          ],
+        },
+      };
+    </script>
+    <!-- Custom styles -->
+    <style>
+      body {
+        background-color: #000000;
+        color: rgba(255, 255, 255, 0.87);
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #ffd700, #b8860b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .gradient-line::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #ffd700, transparent);
+      }
+      .gradient-fill {
+        background: linear-gradient(90deg, #b8860b, #ffd700);
+      }
+      /* Back to top button animation */
+      .back-to-top {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+      .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+      }
+      .metrics-item {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+      }
+      .metrics-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.1);
+        border-color: rgba(255, 215, 0, 0.3);
+      }
+      .hero-section {
+      }
+      .card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(184, 134, 11, 0.1);
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+        border-color: rgba(255, 215, 0, 0.2);
+      }
+      .gold-border {
+        border-color: rgba(255, 215, 0, 0.3);
+      }
+      .progress-gold::-webkit-progress-value {
+        background-color: #ffd700;
+      }
+      .progress-gold::-moz-progress-bar {
+        background-color: #ffd700;
+      }
+      .progress-gold {
+        --value-color: #ffd700;
+      }
+      .divider::before,
+      .divider::after {
+        background-color: rgba(255, 215, 0, 0.3);
+      }
+      .badge-success {
+        background-color: #006400 !important;
+        color: #ffffff !important;
+      }
+      .badge-error {
+        background-color: #8b0000 !important;
+        color: #ffffff !important;
+      }
+      /* Add additional styles to ensure status badges display correctly */
+      .status-badge {
+        display: inline-block;
+        min-width: 4rem;
+        text-align: center;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .status-success {
+        background-color: #006400;
+        color: #ffffff;
+      }
+      .status-error {
+        background-color: #8b0000;
+        color: #ffffff;
+      }
+      /* Reduce card padding */
+      .card-body {
+        padding: 1.5rem !important; /* Reverted padding for better spacing */
+      }
+      /* Add gradient effect for specific card titles */
+      .card-body > .card-title.text-gold-500 {
+        background: linear-gradient(135deg, #ffd700, #b8860b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 4px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .card-body > .card-title.text-gold-500::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #ffd700, transparent);
+        border-radius: 2px;
+      }
+
+      /* Reset evaluation metric card title styles */
+      .metrics-item .card-title.text-gold-500 {
+        background: none;
+        -webkit-text-fill-color: #ffd700;
+        text-shadow: none;
+        font-weight: 500;
+        padding-bottom: 0;
+      }
+
+      .metrics-item .card-title.text-gold-500::after {
+        display: none;
+      }
+
+      /* Enhance heading styles */
+      .text-3xl.gradient-text {
+        position: relative;
+        padding-bottom: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+
+      .text-3xl.gradient-text::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body class="font-[Roboto,sans-serif] leading-relaxed">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <!-- Title Section -->
+      <header class="mb-8 py-4">
+        <h1 class="text-5xl font-bold text-center mb-2 gradient-text">
+          MCP Service Evaluation Report
+        </h1>
+        <div class="w-32 h-1 mx-auto bg-gold-500 opacity-70 rounded-full"></div>
+      </header>
+
+      <!-- First Screen Section - Radar Chart and Overview -->
+      <section class="hero-section mb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <!-- Left Side Radar Chart -->
+          <div class="lg:col-span-2">
+            <div
+              class="card bg-base-200 shadow-xl h-full flex flex-col justify-center gold-border"
+            >
+              <div class="card-body">
+                <h2 class="text-3xl font-medium mb-6 text-center gradient-text">
+                  Service Capability Radar Chart
+                </h2>
+                <div class="w-full h-[400px] mx-auto" id="radar-chart"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Right Side Overview -->
+          <div class="lg:col-span-3">
+            <div
+              class="card bg-base-200 shadow-xl h-full flex flex-col gold-border"
+            >
+              <div class="card-body">
+                <h2 class="text-3xl font-medium mb-6 gradient-text">
+                  Capability Overview
+                </h2>
+                <div id="capability-overview" class="text-gray-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Capability List Section -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-medium mb-6 text-center gradient-text">
+          Capability List
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Card templates for capabilities -->
+          <div
+            class="capability-template card bg-base-200 shadow-xl gold-border"
+            style="display: none"
+          >
+            <div class="card-body">
+              <h3 class="card-title text-gold-500">Capability Name</h3>
+              <p class="capability-description text-gray-400">
+                Capability description.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="capability-list"></div>
+      </section>
+
+      <!-- Evaluation Metrics Section -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-medium mb-6 text-center gradient-text">
+          Evaluation Metrics
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Template for a metric -->
+          <div
+            class="metric-template card bg-base-200 shadow-xl gold-border metrics-item"
+            style="display: none"
+          >
+            <div class="card-body">
+              <h3 class="card-title text-gold-500">Metric Name</h3>
+              <p class="metric-description text-gray-400">
+                Metric description.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="evaluation-metrics"></div>
+      </section>
+
+      <!-- Evaluation Tasks Section -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-medium mb-8 text-center gradient-text">
+          Evaluation Tasks
+        </h2>
+        <div id="evaluation-tasks" class="space-y-8"></div>
+        <!-- Task template -->
+        <div
+          id="task-template"
+          class="card bg-base-200 shadow-xl gold-border"
+          style="display: none"
+        >
+          <div class="card-body">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="card-title text-xl text-gold-500 flex-grow">Task #ID</h3>
+            </div>
+            <p class="task-description text-gray-300 mb-4">
+              Task description here.
+            </p>
+            <div class="collapse collapse-arrow bg-base-100 border border-gold-500/20 rounded-box">
+              <input type="checkbox" />
+              <div class="collapse-title text-md font-medium text-gold-500">
+                Execution Details
+              </div>
+              <div class="collapse-content bg-base-300">
+                <pre
+                  class="task-result text-xs text-gray-400 whitespace-pre-wrap overflow-x-auto"
+                ></pre>
+                <p class="task-time text-sm text-gray-500 mt-2 text-right">
+                  Execution Time: <span class="time-value"></span>s
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Back to top button -->
+      <button
+        id="back-to-top"
+        class="fixed bottom-6 right-6 btn btn-primary btn-circle shadow-lg back-to-top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      // Dummy data for testing - replace with actual data
+      const reportData = REPORT_DATA_PLACEHOLDER;
+
+      // ECharts Radar Chart Initialization
+      function initRadarChart(finalMetricScores) {
+        const chartDom = document.getElementById("radar-chart");
+        const myChart = echarts.init(chartDom);
+        const indicatorData = Object.keys(finalMetricScores).map((key) => ({
+          name: key,
+          max: 1,
+        }));
+        const valueData = Object.values(finalMetricScores);
+
+        const option = {
+          tooltip: {
+            trigger: "item",
+          },
+          radar: {
+            indicator: indicatorData,
+            center: ["50%", "55%"],
+            radius: "75%",
+            name: {
+              textStyle: {
+                color: "#FFD700",
+                fontSize: 14,
+                fontWeight: "bold",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                borderRadius: 3,
+                padding: [3, 5],
+              },
+            },
+            splitArea: {
+              areaStyle: {
+                color: [
+                  "rgba(184, 134, 11, 0.1)",
+                  "rgba(184, 134, 11, 0.05)",
+                  "rgba(184, 134, 11, 0.1)",
+                  "rgba(184, 134, 11, 0.05)",
+                ],
+                shadowColor: "rgba(0, 0, 0, 0.2)",
+                shadowBlur: 10,
+              },
+            },
+            axisLine: {
+              lineStyle: {
+                color: "rgba(255, 215, 0, 0.3)",
+              },
+            },
+            splitLine: {
+              lineStyle: {
+                color: "rgba(255, 215, 0, 0.1)",
+              },
+            },
+          },
+          series: [
+            {
+              name: "Capability Scores",
+              type: "radar",
+              data: [
+                {
+                  value: valueData,
+                  name: "Scores",
+                  areaStyle: {
+                    color: "rgba(255, 215, 0, 0.3)",
+                  },
+                  lineStyle: {
+                    color: "#FFD700",
+                  },
+                  itemStyle: {
+                    color: "#FFD700",
+                  },
+                },
+              ],
+            },
+          ],
+        };
+
+        myChart.setOption(option);
+      }
+
+      // Function to render Capability Overview
+      function renderCapabilityOverview(overview) {
+        const overviewElement = document.getElementById("capability-overview");
+        overviewElement.innerHTML = `<p>${overview.replace(/\n/g, "<br>")}</p>`;
+      }
+
+      // Function to render Capability List
+      function renderCapabilityList(capabilities) {
+        const listContainer = document.getElementById("capability-list");
+        const template = document.querySelector(".capability-template");
+        listContainer.innerHTML = ""; // Clear existing
+
+        capabilities.forEach((capability) => {
+          const clone = template.cloneNode(true);
+          clone.style.display = "block";
+          clone.classList.remove("capability-template");
+          clone.querySelector(".card-title").textContent = capability.name;
+          clone.querySelector(".capability-description").textContent =
+            capability.description;
+          listContainer.appendChild(clone);
+        });
+      }
+
+      // Function to render Evaluation Metrics
+      function renderEvaluationMetrics(metrics) {
+        const metricsContainer = document.getElementById("evaluation-metrics");
+        const template = document.querySelector(".metric-template");
+        metricsContainer.innerHTML = ""; // Clear existing
+
+        metrics.forEach((metric) => {
+          const clone = template.cloneNode(true);
+          clone.style.display = "block";
+          clone.classList.remove("metric-template");
+          clone.querySelector(".card-title").textContent = metric.name;
+          clone.querySelector(".metric-description").textContent =
+            metric.description;
+          metricsContainer.appendChild(clone);
+        });
+      }
+
+      // Function to render Evaluation Tasks
+      function renderEvaluationTasks(tasks) {
+        const tasksContainer = document.getElementById("evaluation-tasks");
+        const template = document.getElementById("task-template");
+        tasksContainer.innerHTML = ""; // Clear existing
+
+        tasks.forEach((task, index) => {
+          const clone = template.cloneNode(true);
+          clone.style.display = "block";
+          clone.removeAttribute("id");
+          clone.querySelector(
+            ".card-title"
+          ).textContent = `Task #${task.id}`; // Use actual ID
+          clone.querySelector(".task-description").textContent = task.description;
+
+          // Format and display execution result
+          let resultText;
+          if (typeof task.execution_result === "string") {
+            resultText = task.execution_result;
+          } else if (typeof task.execution_result === "object") {
+            resultText = JSON.stringify(task.execution_result, null, 2);
+          } else {
+            resultText = String(task.execution_result);
+          }
+          clone.querySelector(".task-result").textContent = resultText;
+          clone.querySelector(".time-value").textContent = task.execution_time.toFixed(3);
+          
+          tasksContainer.appendChild(clone);
+        });
+      }
+
+      // Main render function
+      function renderReport(data) {
+        if (!data) {
+          console.error("Report data is missing.");
+          return;
+        }
+
+        initRadarChart(data.final_metric_scores || {});
+        renderCapabilityOverview(data.capability_overview || "N/A");
+        renderCapabilityList(data.capability_list || []);
+        renderEvaluationMetrics(data.evaluation_metrics || []);
+        renderEvaluationTasks(data.evaluation_tasks || []);
+      }
+
+      // Back to top button functionality
+      const backToTopButton = document.getElementById("back-to-top");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add("visible");
+        } else {
+          backToTopButton.classList.remove("visible");
+        }
+      });
+      backToTopButton.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // Call render functions on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        renderReport(reportData);
+      });
+    </script>
+  </body>
+</html> 

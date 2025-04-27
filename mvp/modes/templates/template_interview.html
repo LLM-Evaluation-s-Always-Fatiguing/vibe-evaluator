@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCP Agent Interview Evaluation Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Import Tailwind CSS and DaisyUI CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Configure Tailwind and DaisyUI -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: {
+                50: "#FFF9E5",
+                100: "#FFF0B3",
+                200: "#FFE680",
+                300: "#FFDB4D",
+                400: "#FFD11A",
+                500: "#FFCC00",
+                600: "#E6B800",
+                700: "#CCA300",
+                800: "#B38F00",
+                900: "#997A00",
+              },
+            },
+          },
+        },
+        daisyui: {
+          themes: [
+            {
+              luxury: {
+                ...require("daisyui/src/theming/themes")["[data-theme=luxury]"],
+                primary: "#FFD700", // Gold
+                "primary-focus": "#E6C200", // Deep gold
+                "primary-content": "#000000", // Black text
+                secondary: "#B8860B", // Dark gold
+                accent: "#DAA520", // Golden rod
+                "base-100": "#000000", // Pure black background
+                "base-200": "#0A0A0A", // Slightly brighter black
+                "base-300": "#141414", // Deep gray-black
+                neutral: "#272727", // Neutral color
+              },
+            },
+          ],
+        },
+      };
+    </script>
+    <!-- Custom styles -->
+    <style>
+      body {
+        background-color: #000000;
+        color: rgba(255, 255, 255, 0.87);
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #ffd700, #b8860b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .gold-border {
+        border-color: rgba(255, 215, 0, 0.3);
+      }
+      .divider::before,
+      .divider::after {
+        background-color: rgba(255, 215, 0, 0.3);
+      }
+      /* Back to top button animation */
+      .back-to-top {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+      .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      /* Interview specific styles */
+      .overview {
+        background-color: rgba(20, 20, 30, 0.6);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #ffd700;
+        margin-bottom: 1.5rem;
+      }
+      
+      .capability {
+        background-color: rgba(20, 20, 30, 0.6);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #DAA520;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+      
+      .capability:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.1);
+      }
+      
+      .capability h3 {
+        color: #ffd700;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .question {
+        background-color: rgba(20, 20, 30, 0.6);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+      
+      .question:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.08);
+      }
+      
+      .question-text {
+        font-weight: bold;
+        color: #ffd700;
+        margin-bottom: 0.75rem;
+      }
+      
+      .answer {
+        padding-left: 1.5rem;
+        border-left: 3px solid rgba(255, 215, 0, 0.4);
+      }
+      
+      .assessment {
+        background-color: rgba(20, 30, 40, 0.6);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #B8860B;
+        margin: 1.5rem 0;
+      }
+      
+      .score-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      
+      .score-item {
+        background-color: rgba(20, 20, 30, 0.6);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        flex: 1 0 200px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      
+      .score-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+      }
+      
+      .score-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+      
+      .confidence-high {
+        color: #4CAF50;
+      }
+      
+      .confidence-medium {
+        color: #FFC107;
+      }
+      
+      .confidence-low {
+        color: #F44336;
+      }
+      
+      /* For collapsible raw data */
+      .collapse-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
+      }
+      
+      .collapse-open {
+        max-height: 50000px; /* Large enough for any JSON data */
+      }
+      
+      pre {
+        background-color: rgba(10, 10, 15, 0.8);
+        padding: 1.25rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin-top: 1rem;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      .raw-data-btn {
+        background-color: rgba(255, 215, 0, 0.2);
+        color: #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.5);
+      }
+      
+      .raw-data-btn:hover {
+        background-color: rgba(255, 215, 0, 0.3);
+        color: #fff;
+        border-color: rgba(255, 215, 0, 0.7);
+      }
+      
+      /* Section Headings */
+      h2 {
+        font-size: 1.75rem; /* Reduced from 2.5rem */
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        color: #ffd700;
+        position: relative;
+      }
+      
+      h2::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background: #ffd700;
+      }
+      
+      /* Card styling */
+      .card {
+        background-color: rgba(10, 10, 15, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        border-radius: 0.5rem;
+      }
+      
+      .card-title {
+        color: #DAA520;
+        font-size: 1.25rem;
+      }
+      
+      /* Section Styles */
+      .section {
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        background-color: rgba(10, 10, 15, 0.4);
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+      }
+
+    </style>
+  </head>
+  <body class="font-[Roboto,sans-serif] leading-relaxed">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <!-- Title Section -->
+      <header class="mb-8 py-4">
+        <h1 class="text-5xl font-bold text-center mb-2 gradient-text">
+          MCP Agent Interview Evaluation Report
+        </h1>
+        <div class="w-32 h-1 mx-auto bg-gold-500 opacity-70 rounded-full"></div>
+      </header>
+
+      <!-- Candidate Overview -->
+      <section id="overview-section" class="section mb-8">
+        <h2 class="gradient-text">Candidate Overview</h2>
+        <div id="candidate-overview" class="overview"></div>
+      </section>
+
+      <!-- Declared Capabilities Section -->
+      <section id="declared-capabilities-section" class="section mb-8">
+        <h2 class="gradient-text">Declared Capabilities</h2>
+        <div id="declared-capabilities-list" class="space-y-4"></div>
+        <!-- Template for declared capability -->
+        <div id="declared-capability-template" class="capability" style="display: none;">
+          <h3 class="capability-name"></h3>
+          <p class="capability-description text-gray-400"></p>
+          <p class="capability-confidence text-sm mt-2">
+            Confidence: <span class="confidence-value"></span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Verified Capabilities Section -->
+      <section id="verified-capabilities-section" class="section mb-8">
+        <h2 class="gradient-text">Verified Capabilities</h2>
+        <div id="verified-capabilities-list" class="space-y-4"></div>
+        <!-- Template for verified capability -->
+        <div id="verified-capability-template" class="capability" style="display: none;">
+          <h3 class="capability-name"></h3>
+          <p class="capability-description text-gray-400"></p>
+          <p class="capability-confidence text-sm mt-2">
+            Confidence Score: <span class="confidence-value"></span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Questions & Answers Section -->
+      <section id="qa-section" class="section mb-8">
+        <h2 class="gradient-text">Questions & Answers</h2>
+        <div id="qa-list" class="space-y-6"></div>
+        <!-- Template for Q&A -->
+        <div id="qa-template" class="question" style="display: none;">
+          <p class="question-text">Q: <span class="question-content"></span></p>
+          <div class="answer text-gray-300">
+            A: <span class="answer-content"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Overall Assessment Section -->
+      <section id="assessment-section" class="section mb-8">
+        <h2 class="gradient-text">Overall Assessment</h2>
+        <div id="overall-assessment" class="assessment"></div>
+      </section>
+
+      <!-- Capability Scores Section -->
+      <section id="scores-section" class="section mb-8">
+        <h2 class="gradient-text">Capability Scores</h2>
+        <div id="capability-scores-container" class="score-container"></div>
+        <!-- Template for score item -->
+        <div id="score-template" class="score-item" style="display: none;">
+          <div class="capability-name font-medium text-gold-500"></div>
+          <div class="score-value gradient-text"></div>
+        </div>
+      </section>
+
+      <!-- Back to top button -->
+      <button
+        id="back-to-top"
+        class="fixed bottom-6 right-6 btn btn-primary btn-circle shadow-lg back-to-top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      // This placeholder will be replaced by the actual JSON data
+      const reportData = REPORT_DATA_PLACEHOLDER;
+      
+      // Helper function to get confidence class
+      function getConfidenceClass(score) {
+          if (score >= 0.7) return 'confidence-high';
+          if (score >= 0.4) return 'confidence-medium';
+          return 'confidence-low';
+      }
+
+      // Function to render Candidate Overview
+      function renderCandidateOverview(overview) {
+        const overviewElement = document.getElementById('candidate-overview');
+        overviewElement.innerHTML = `<p>${overview.replace(/\n/g, "<br>")}</p>`;
+      }
+
+      // Function to render Declared Capabilities
+      function renderDeclaredCapabilities(capabilities) {
+        const listContainer = document.getElementById('declared-capabilities-list');
+        const template = document.getElementById('declared-capability-template');
+        listContainer.innerHTML = ''; // Clear existing
+
+        capabilities.forEach(capability => {
+          const clone = template.cloneNode(true);
+          clone.style.display = 'block';
+          clone.removeAttribute('id');
+          clone.querySelector('.capability-name').textContent = capability.name;
+          clone.querySelector('.capability-description').textContent = capability.description;
+          const confidenceSpan = clone.querySelector('.confidence-value');
+          confidenceSpan.textContent = capability.confidence.toFixed(2);
+          confidenceSpan.className = `confidence-value ${getConfidenceClass(capability.confidence)}`;
+          listContainer.appendChild(clone);
+        });
+      }
+
+      // Function to render Verified Capabilities
+      function renderVerifiedCapabilities(capabilities) {
+        const listContainer = document.getElementById('verified-capabilities-list');
+        const template = document.getElementById('verified-capability-template');
+        listContainer.innerHTML = ''; // Clear existing
+
+        capabilities.forEach(capability => {
+          const clone = template.cloneNode(true);
+          clone.style.display = 'block';
+          clone.removeAttribute('id');
+          clone.querySelector('.capability-name').textContent = capability.name;
+          clone.querySelector('.capability-description').textContent = capability.description;
+          const confidenceSpan = clone.querySelector('.confidence-value');
+          confidenceSpan.textContent = capability.confidence.toFixed(2);
+          confidenceSpan.className = `confidence-value ${getConfidenceClass(capability.confidence)}`;
+          listContainer.appendChild(clone);
+        });
+      }
+
+      // Function to render Questions & Answers
+      function renderQA(qaList) {
+        const listContainer = document.getElementById('qa-list');
+        const template = document.getElementById('qa-template');
+        listContainer.innerHTML = ''; // Clear existing
+
+        qaList.forEach(qa => {
+          const clone = template.cloneNode(true);
+          clone.style.display = 'block';
+          clone.removeAttribute('id');
+          clone.querySelector('.question-content').textContent = qa.question;
+          // Safely set innerHTML for answer to handle potential markdown/simple HTML
+          const answerElement = clone.querySelector('.answer-content');
+          try {
+              // Basic sanitization (replace with more robust library if complex HTML expected)
+              const cleanAnswer = qa.answer.replace(/<script.*?>.*?<\/script>/gi, ''); 
+              answerElement.innerHTML = cleanAnswer.replace(/\n/g, "<br>");
+          } catch (e) {
+              console.error("Error rendering answer:", e);
+              answerElement.textContent = qa.answer; // Fallback to textContent
+          }
+          listContainer.appendChild(clone);
+        });
+      }
+
+      // Function to render Overall Assessment
+      function renderOverallAssessment(assessment) {
+        const assessmentElement = document.getElementById('overall-assessment');
+        assessmentElement.innerHTML = `<p>${assessment.replace(/\n/g, "<br>")}</p>`;
+      }
+
+      // Function to render Capability Scores
+      function renderCapabilityScores(scores) {
+        const scoreContainer = document.getElementById('capability-scores-container');
+        const template = document.getElementById('score-template');
+        scoreContainer.innerHTML = ''; // Clear existing
+
+        for (const [name, score] of Object.entries(scores)) {
+          const clone = template.cloneNode(true);
+          clone.style.display = 'block';
+          clone.removeAttribute('id');
+          clone.querySelector('.capability-name').textContent = name;
+          const scoreValue = clone.querySelector('.score-value');
+          scoreValue.textContent = score.toFixed(2);
+          scoreValue.classList.add(getConfidenceClass(score)); 
+          scoreContainer.appendChild(clone);
+        }
+      }
+
+      // Main render function
+      function renderReport(data) {
+        if (!data) {
+          console.error("Report data is missing.");
+          return;
+        }
+        renderCandidateOverview(data.candidate_overview || 'N/A');
+        renderDeclaredCapabilities(data.declared_capabilities || []);
+        renderVerifiedCapabilities(data.verified_capabilities || []);
+        renderQA(data.questions_and_answers || []);
+        renderOverallAssessment(data.overall_assessment || 'N/A');
+        renderCapabilityScores(data.capability_scores || {});
+      }
+
+      // Back to top button functionality
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('visible');
+        } else {
+          backToTopButton.classList.remove('visible');
+        }
+      });
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Call render functions on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if reportData exists and is valid JSON before parsing
+        if (typeof reportData !== 'undefined') {
+             try {
+                 renderReport(reportData);
+             } catch (e) {
+                 console.error("Error rendering report data:", e);
+                 document.body.innerHTML = "<div style='color: red; padding: 20px;'>Error rendering report data. Please check the console.</div>";
+             }
+        } else {
+             console.error("Report data is undefined.");
+             document.body.innerHTML = "<div style='color: orange; padding: 20px;'>Report data is missing or invalid.</div>";
+        }
+      });
+    </script>
+  </body>
+</html> 
