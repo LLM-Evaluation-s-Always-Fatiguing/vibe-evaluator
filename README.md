@@ -1,5 +1,7 @@
 # Vibe Evaluator
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LLM-Evaluation-s-Always-Fatiguing/vibe-evaluator)
+
 ## Concept: Vibe Evaluating (English)
 
 This project explores "Vibe Evaluating": an automated approach to assessing AI agents or services based on their standardized capability descriptions, primarily using protocols such as:
